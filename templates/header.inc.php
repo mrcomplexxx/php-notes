@@ -1,15 +1,10 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-session_start();
-
 $url = $_SERVER['REQUEST_URI'];
 $segments = explode('/', $url);
 $activePage = $segments[sizeof($segments)-1];
 
+include "templates/db.inc.php"
 
 ?>
 <head>
@@ -22,28 +17,22 @@ $activePage = $segments[sizeof($segments)-1];
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="#">
+    <a class="navbar-item" href="index.php">
       <img src="assets/img/logo.png" width="112" height="28">
-    </a>
-
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
     </a>
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a href="#" class="navbar-item">
+      <a href="index.php" class="navbar-item">
         Home
       </a>
 
-      <a href="#" class="navbar-item">
+      <a href="gallery.php" class="navbar-item">
         Gallery Search
       </a>
 
-      <a href="#" class="navbar-item">
+      <a href="about.php" class="navbar-item">
         About
       </a>
     </div>
