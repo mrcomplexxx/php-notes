@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 $url = $_SERVER['REQUEST_URI'];
 $segments = explode('/', $url);
 $activePage = $segments[sizeof($segments)-1];

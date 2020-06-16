@@ -5,3 +5,5 @@
     </p>
   </div>
 </footer>
+
+<script src="assets/js/notification-delete.js"></script>
