@@ -13,6 +13,7 @@ include "templates/db.inc.php"
   <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
   <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="assets/css/bulma.min.css">
+  <script src="https://kit.fontawesome.com/ddaf057a3b.js" crossorigin="anonymous"></script>
 </head>
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -40,10 +41,10 @@ include "templates/db.inc.php"
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a href="#" class="button is-primary">
+          <a href="register.php" class="button is-primary">
             <strong>Sign up</strong>
           </a>
-          <a href="#" class="button is-light">
+          <a href="login.php" class="button is-light">
             Log in
           </a>
         </div>

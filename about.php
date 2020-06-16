@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <?php include ('templates/header.inc.php') ?>
-<section class="hero is-primary">
+<section class="hero is-primary is-fullheight-with-navbar">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
