@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <?php
-include ('templates/header.inc.php');
+include_once ('templates/header.inc.php');
 
-if(isset($_POST['formSubmitted'])){
-  if(isset($_POST['email'], $_POST['password'])){
-    $name = $_POST['email'];
+if(isset($_POST['submit'])){
+  if(!empty($_POST['account']) && !empty($_POST['password'])){
+    $account = $_POST['account'];
     $password = $_POST['password'];
-
-    $query = "SELECT * FROM users WHERE email = '" . $name . "' AND password = '" . $password . "'";
-
+    if (filter_var($account, FILTER_VALIDATE_EMAIL)){
+      $query = "SELECT * FROM users WHERE email = '" . $account . "'";
+    }
+    else {
+      $query = "SELECT * FROM users WHERE handle = '" . $account . "'";
+    }
+    
     $result = $conn->query($query);
-    if($result){
-
+    if($result->num_rows){
       $user = $result->fetch_assoc();
+      if(password_verify ($password , $user['password'])){
+        session_start();
+        $_SESSION["user"] = $user['handle'];
+        header('Location: index.php');
+      }
+      else {
+        $errorMessage = 'Incorrect Password.';
+      }
 
-      session_start();
-      $_SESSION["id"] = $user['id'];
-      header('Location: index.php');
     }
     else{
-      $errorMessage = 'Wrong credentials';
+      $errorMessage = 'No user with that email or handle.';
     }
   }
   else{
-    $errorMessage = 'Enter the required data';
+    $errorMessage = 'Enter both email and password.';
   }
 }
 ?>
@@ -39,9 +47,9 @@ if(isset($_POST['formSubmitted'])){
           <form class="form" action="login.php" method="POST">
             <div class="field">
               <p class="control has-icons-left">
-                <input name="email" class="input" type="email" placeholder="Email">
+                <input name="account" class="input" type="text" placeholder="Email or Handle">
                 <span class="icon is-small is-left">
-                  <i class="fas fa-envelope"></i>
+                  <i class="fas fa-user"></i>
                 </span>
               </p>
             </div>
@@ -55,9 +63,7 @@ if(isset($_POST['formSubmitted'])){
             </div>
             <div class="field">
               <p class="control">
-                <button name="formSubmitted" type="submit" class="button is-primary">
-                  Login
-                </button>
+                <input type="submit" name="submit" value="Log in" class="button is-primary">
               </p>
             </div>
           </form>
@@ -77,5 +83,5 @@ if(isset($_POST['formSubmitted'])){
     </div>
   </div>
 </section>
-<?php include ('templates/footer.inc.php') ?>
+<?php include_once ('templates/footer.inc.php') ?>
 </html>

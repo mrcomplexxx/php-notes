@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<?php include ('templates/header.inc.php') ?>
+<?php
+
+include_once ('templates/header.inc.php');
+
+if (isset($_GET['user'])) {
+  $user = $_GET['user'];
+  
+  $query = "SELECT * FROM users WHERE handle = '".$user."'";
+  $result = $conn->query($query);
+
+  if($result->num_rows){
+    $user = $result->fetch_assoc();
+  }
+
+}
+
+?>
 <section class="hero is-primary">
   <div class="hero-body">
     <div class="container">
@@ -13,5 +29,5 @@
     </div>
   </div>
 </section>
-<?php include ('templates/footer.inc.php') ?>
+<?php include_once ('templates/footer.inc.php') ?>
 </html>

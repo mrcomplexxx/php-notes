@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<?php include ('templates/header.inc.php') ?>
+<?php include_once ('templates/header.inc.php') ?>
 <section class="hero is-primary is-fullheight-with-navbar">
   <div class="hero-body">
     <div class="container">
@@ -13,5 +13,5 @@
     </div>
   </div>
 </section>
-<?php include ('templates/footer.inc.php') ?>
+<?php include_once ('templates/footer.inc.php') ?>
 </html>
