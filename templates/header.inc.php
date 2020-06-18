@@ -12,7 +12,7 @@ include "templates/db.inc.php";
   <meta charset="utf-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Image Gallery</title>
+  <title>My Notes</title>
   <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
   <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="assets/css/bulma.min.css">
@@ -32,8 +32,8 @@ include "templates/db.inc.php";
         Home
       </a>
 
-      <a href="gallery.php" class="navbar-item">
-        Gallery Search
+      <a href="notes.php" class="navbar-item">
+        Notes
       </a>
 
       <a href="about.php" class="navbar-item">
@@ -54,8 +54,8 @@ include "templates/db.inc.php";
         </div>
       <?php else: ?>
         <div class="field has-addons ml-4">
-          <form class="control" action="gallery.php" method="get">
-            <input class="button is-info" type="submit" name="user" value="<?php echo "@" . $_SESSION['user']; ?>">
+          <form class="control" action="notes.php" method="get">
+            <input class="button is-info" type="submit" name="user" value="<?php echo htmlspecialchars($_SESSION['user']) ?>">
           </form>
           <form class="control" action="logout.php" method="post">
             <input class="button is-warning" type="submit" name="logout" value="Log Out">
