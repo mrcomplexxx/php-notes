@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-    $notification = $delete.parentNode;
+  (document.querySelectorAll('.notification .delete') || []).forEach((del) => {
+    const notification = del.parentNode;
 
-    $delete.addEventListener('click', () => {
-      $notification.parentNode.removeChild($notification);
+    del.addEventListener('click', () => {
+      notification.parentNode.removeChild(notification);
     });
   });
 });

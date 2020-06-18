@@ -7,3 +7,4 @@
 </footer>
 
 <script src="assets/js/notification-delete.js"></script>
+<script src="assets/js/nav-bar.js"></script>

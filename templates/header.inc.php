@@ -24,6 +24,12 @@ include "templates/db.inc.php";
     <a class="navbar-item" href="index.php">
       <img src="assets/img/logo.png" width="112" height="28">
     </a>
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">

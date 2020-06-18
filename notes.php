@@ -4,19 +4,26 @@
 
 include_once ('templates/header.inc.php');
 
+$empty = false;
+
 if (isset($_GET['user']) || isset($_SESSION['user'])) {
   if (isset($_GET['user'])) {
     $handle = $_GET['user'];
 
     $query = "SELECT * FROM notes WHERE  AND handle = '".$handle."'";
     $result = $conn->query($query);
-
-    if($result->num_rows){
-      $user = $result->fetch_assoc();
+    if(empty($result)){
+      //results is empty
+      $empty = true;
     }
+    else {
+      //we have results
+    }
+
   }
   else {
-    $query = "SELECT * FROM notes WHERE handle = '".$_SESSION['user']."'";
+    $handle = $_SESSION['user'];
+    $query = "SELECT * FROM notes WHERE handle = '".$handle."'";
     $result = $conn->query($query);
   }
 
