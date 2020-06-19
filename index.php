@@ -13,10 +13,10 @@
     </div>
   </div>
 </section>
-<section class="hero is-large is-light">
+<section class="hero is-medium is-light">
   <div class="hero-body">
     <div class="container">
-      
+      <?php include_once ('templates/latestnotes.php') ?>
     </div>
   </div>
 </section>
