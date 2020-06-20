@@ -3,44 +3,70 @@
 <?php
 
 include_once ('templates/header.inc.php');
+include_once ('templates/pagination.fun.php');
 
 $topTitle = 'Notes!';
 
+//Pagination Setup
+if(isset($_GET['page'])){
+  $page_num = filter_var($_GET['page'], FILTER_VALIDATE_INT,[
+    'options' => [
+      'default' => 1,
+      'min_range' => 1
+    ]
+  ]);
+}else{
+  $page_num = 1;
+}
+$page_limit = 4;
+$page_offset = $page_limit * ($page_num - 1);
+
+//get user notes
 if (isset($_GET['user']) || isset($_SESSION['user'])) {
   if (isset($_GET['user'])) {
     $changeTitle = true;
     $handle = $_GET['user'];
-    $query = "SELECT * FROM notes WHERE private = 0 AND owner = '".$handle."'";
+    $contidion = "WHERE private = 0 AND owner = '".$handle."'";
   }
   else {
+    $notesFound = TRUE;
     $handle = $_SESSION['user'];
-    $query = "SELECT * FROM notes WHERE owner = '".$handle."'";
+    $contidion = "WHERE owner = '".$handle."'";
   }
 
-  $result = mysqli_query($conn, $query);
-  $usernotes = mysqli_fetch_all($result, MYSQLI_ASSOC);
+  $result = mysqli_query($conn, "SELECT COUNT(*) as total FROM notes ".$contidion);
+  $data = mysqli_fetch_assoc($result);
+  $notecount = $data['total'];
 
   if (isset($changeTitle)) {
-    if(empty($usernotes)){
+    if(empty($data['total'])){
       $topTitle = "No notes found for user @".htmlspecialchars($handle);
     }
     else {
-      $topTitle = "@".htmlspecialchars($handle)."'s notes.";
+      $notesFound = TRUE;
+      $topTitle = "@".htmlspecialchars($handle)."'s public notes.";
     }
   }
-
 }
 
+if (isset($_POST['editnote'])) {
+  $title = $_POST['noteTitle'];
+  $text = $_POST['noteText'];
+  $handle = $_SESSION['user'];
+}
+else {
+  $text = $title = $handle = '';
+}
 
-$text = $title = $handle = '';
 $errors = ['Content' => null, 'Title' => null, 'User' => null];
 
+//save note create/update
 if (isset($_POST['savenote'])) {
   $private = isset($_POST['private']);
   $validForm = true;
 
   if(!empty($_POST['notetxt'])){
-    $text = $_POST['notetxt'];
+    $text = mysqli_real_escape_string($conn, $_POST['notetxt']);
   }
   else {
     $validForm = false;
@@ -72,12 +98,29 @@ if (isset($_POST['savenote'])) {
   }
 
   if ($validForm) {
-    $sql = "INSERT INTO notes (owner, title, note, private) VALUES ('".$handle."', '".$title."', '".$text."', '".$private."')";
+    if (isset($_POST['editnote'])) {
+      $id = $_POST['noteId'];
+      $sql = "UPDATE notes SET title ='".$title."', note ='".$text."', private ='".$private."' WHERE id ='".$id;
+    }
+    else {
+      $sql = "INSERT INTO notes (owner, title, note, private) VALUES ('".$handle."', '".$title."', '".$text."', '".$private."')";
+    }
     if ($conn->query($sql) === TRUE) {
       header('Location: notes.php'); //201
     } else {
       echo "Error: " . $sql . "<br>" . $conn->error;
     }
+  }
+}
+
+//delete note
+if (isset($_POST['deletenote'])) {
+  $id = $_POST['noteId'];
+  $sql = "DELETE FROM notes WHERE id = $id";
+  if ($conn->query($sql) === TRUE) {
+    header('Location: notes.php'); //201
+  } else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
   }
 }
 
@@ -98,6 +141,14 @@ if (isset($_POST['savenote'])) {
   <div class="hero-body">
     <div class="container">
       <?php
+        if (!isset($_POST['editnote'])) {
+          if (isset($_SESSION['user']) && !isset($_GET['user'])) {
+            echo "<h2 class = 'subtitle'>Your notes: </h2>";
+          }
+          if (isset($notesFound)) {
+            showUserNotes($conn, $page_num, $page_limit, $page_offset, $contidion, $notecount);
+          }
+        }
         if (isset($_SESSION['user']) && !isset($_GET['user'])){
           $charCount = true;
       ?>
@@ -109,7 +160,7 @@ if (isset($_POST['savenote'])) {
           <form class ="form box has-background-success" action="notes.php" method="post">
             <div class="field">
               <div class="control">
-                <textarea name="notetxt" class="textarea is-primary has-fixed-size" placeholder="Write your note here ..." rows="10" maxlength="1000" id="notetxt" value="<?php echo htmlspecialchars($notetxt) ?>"></textarea>
+                <textarea name="notetxt" class="textarea is-primary has-fixed-size" placeholder="Write your note here ..." rows="10" maxlength="1000" id="notetxt"><?php echo htmlspecialchars($text) ?></textarea>
               </div>
             </div>
             <div class="field">
@@ -133,10 +184,13 @@ if (isset($_POST['savenote'])) {
               <div class="control">
                 <div class="columns is-desktop">
                   <div class="column is-three-quarters-desktop">
-                    <input class="input is-primary is-fullwidth" type="text" name="title" placeholder="Insert Title">
+                    <input class="input is-primary is-fullwidth" type="text" name="title" placeholder="Insert Title" value="<?php echo htmlspecialchars($title) ?>">
                   </div>
                   <div class="column has-text-right">
                     <div class="buttons has-addons is-right">
+                      <?php if(isset($_POST['noteId'])){
+                        echo "<input type='number' name='noteId' value='".$_POST['noteId']."' hidden>";
+                      } ?>
                       <input class="button is-danger "type="submit" name="deletenote" value="Delete" <?php echo (isset($_POST['editnote']))? '' : 'disabled'; ?>>
                       <input class="button is-warning "type="submit" name="savenote" value="Save">
                     </div>

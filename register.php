@@ -117,6 +117,7 @@ if(isset($_POST['register'])){
       session_start();
       $_SESSION["user"] = $handle;
       header('Location: index.php'); //201
+      echo "<script type='text/javascript'>alert('Registered successfully.');</script>";
     } else {
       echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -196,19 +197,19 @@ if(isset($_POST['register'])){
           </form>
         </div>
         <div class="column">
+          <?php if (isset($_POST['register'])): ?>
           <div class="notification is-danger is-light">
             <button class="delete"></button>
             <?php
-            if (isset($_POST['register'])) {
               echo "<strong>Error</strong><br>";
               foreach ($errors as $field => $error){
                 if($error){
                   echo "<strong>" . $field . "<br></strong>" . $error . "<br>";
                 }
               }
-            }
             ?>
           </div>
+          <?php endif; ?>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ if(!isset($noteInfo)){
 
 ?>
 
-<div class="column">
+<div class="column is-one-quarter">
   <div class="box has-background-success">
     <textarea type="text" class="textarea is-primary has-fixed-size" rows="8" readonly><?php echo htmlspecialchars($noteInfo['note']); ?></textarea>
     <nav class="level is-mobile">
@@ -24,17 +24,21 @@ if(!isset($noteInfo)){
       </div>
     </nav>
     <form action="notes.php" method="post">
-      <input type="text" name="noteId" value="<?php echo $noteInfo['id']; ?>" hidden>
+      <input type="number" name="noteId" value="<?php echo $noteInfo['id']; ?>" hidden>
+      <input type="text" name="noteTitle" value="<?php echo htmlspecialchars($noteInfo['title']); ?>" hidden>
+      <input type="text" name="noteText" value="<?php echo htmlspecialchars($noteInfo['note']); ?>" hidden>
       <div class="buttons has-addons is-right">
       <?php
       if(isset($_SESSION['user'])){
         if ($_SESSION['user']!==$noteInfo['owner']){
       ?>
-        <a class="button" href=""><?php echo htmlspecialchars($noteInfo['owner']); ?></a>
+        <a class="button is-fullwidth mt-6 mb-2" href="<?php echo 'notes.php?user='.htmlspecialchars($noteInfo['owner']); ?>"><?php echo '@'.htmlspecialchars($noteInfo['owner']); ?></a>
       <?php }else{ ?>
-        <input class="button is-danger" type="submit" name="deletenote" value="Delete Note">
-        <input class="button is-warning" type="submit" name="editnote" value="Edit Note">
-      <?php }} ?>
+        <input class="button is-danger is-fullwidth" type="submit" name="deletenote" value="Delete Note">
+        <input class="button is-warning is-fullwidth" type="submit" name="editnote" value="Edit Note">
+      <?php }}else { ?>
+        <a class="button is-fullwidth mt-6 mb-2" href="<?php echo 'notes.php?user='.htmlspecialchars($noteInfo['owner']); ?>"><?php echo '@'.htmlspecialchars($noteInfo['owner']); ?></a>
+      <?php } ?>
       </div>
     </form>
   </div>
