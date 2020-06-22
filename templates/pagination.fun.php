@@ -18,11 +18,8 @@ function showUserNotes($conn, $current_page_num, $page_limit, $page_offset, $con
   }
   echo "</div>";
 
-  // total number of pages
   $total_page = ceil($note_count / $page_limit);
-  // set next page number
   $next_page = $current_page_num+1;
-  // set prev page number
   $prev_page = $current_page_num-1;
 
   if(isset($_GET['user'])){
