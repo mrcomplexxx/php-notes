@@ -4,7 +4,7 @@ A notes web app writen in php.
 
 Featuring:
 - Login/Register
-- Bcrypt password encoding
+- Bcrypt password hashing
 - Ability to create private notes
 - View other user's public notes
 
