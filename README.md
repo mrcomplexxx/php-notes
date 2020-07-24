@@ -8,4 +8,4 @@ Featuring:
 - Ability to create private notes
 - View other user's public notes
 
-Live demo [here](https://dialmango.com/notes).
+Live demo [here](https://mvdevwork.com/notes).
